@@ -99,6 +99,14 @@ module Danger
       parse_files(file)
     end
 
+    # Parses all xml files in a directory, which fills all the attributes,
+    # will `raise` for errors
+    # @return   [void]
+    def parse_directory(directory)
+      files = Dir.glob(directory + "*.xml")
+      parse_files(files)
+    end
+
     # Parses multiple XML files, which fills all the attributes,
     # will `raise` for errors
     # @return   [void]

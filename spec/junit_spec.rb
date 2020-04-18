@@ -14,6 +14,16 @@ module Danger
       end
 
       it 'gets the right results for the eigen failure' do
+        @junit.parse 'spec/fixtures/danger-junit-fail.xml'
+
+        expect(@junit.failures.count).to eq 1
+        expect(@junit.passes.count).to eq 46
+        expect(@junit.errors.count).to eq 0
+        expect(@junit.skipped.count).to eq 1
+      end
+
+
+      it 'gets the right results for the eigen failure' do
         @junit.parse 'spec/fixtures/eigen_fail.xml'
 
         expect(@junit.failures.count).to eq 2
@@ -86,6 +96,17 @@ module Danger
 
         outputs = @junit.status_report[:markdowns].first
         expect(outputs.to_s).to include('github.com/thing/thingy')
+      end
+
+      describe 'parsing directory' do
+        it 'gets the corect results for all xml files in a directory' do
+          @junit.parse_directory 'spec/fixtures/'
+
+          expect(@junit.failures.count).to eq 2 + 1 + 1 + 1 + 1
+          expect(@junit.passes.count).to eq 1109 + 0 + 1 + 190 + 46
+          expect(@junit.errors.count).to eq 0 + 0 + 0 + 0 + 0
+          expect(@junit.skipped.count).to eq 0 + 0 + 0 + 7 + 1
+        end
       end
 
       describe 'parsing multiple files' do
